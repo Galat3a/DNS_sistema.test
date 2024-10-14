@@ -12,7 +12,8 @@ Vagrant.configure("2") do |config|
   tierra.vm.network "private_network", ip: "192.168.57.103"
   tierra.vm.provision "shell", name: "update", inline: <<-SHELL
     apt-get update
-    apt-get install -y bind9 dnsutils
+    apt-get install -y bind9 dnsutils apache2
+
   SHELL
   # provisonar sólo este bloque 'vagrant provision tierra --provision-with config'
   tierra.vm.provision "shell", name: "config", inline: <<-SHELL
