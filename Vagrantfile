@@ -1,7 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-
 Vagrant.configure("2") do |config|
   config.vm.box = "debian/bookworm64"
   # config.vbguest.auto_update = false
@@ -15,7 +14,7 @@ Vagrant.configure("2") do |config|
       apt-get update
       apt-get install -y bind9 dnsutils
     SHELL
-    # provisonar sólo este bloque 'vagrant provision master --provision-with config'
+    # provisonar sólo este bloque   'vagrant provision master --provision-with config'
     master.vm.provision "shell", name: "config", inline: <<-SHELL
       cp /vagrant/named /etc/default
       cp /vagrant/named.conf.* /etc/bind
