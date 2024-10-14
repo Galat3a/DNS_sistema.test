@@ -5,7 +5,7 @@
 
 # Hola caracola
 
-# adios
+#  git config --global commit.template "C:\Users\DAW-A.DESKTOP-ECOE3HP\.gittemplate"
 
 
 
