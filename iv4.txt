@@ -1,0 +1,45 @@
+Configuración de BIND para IPv4
+
+    Edita el archivo de configuración de BIND:
+        Abre el archivo principal de configuración de BIND, que normalmente se encuentra en /etc/named.conf o /etc/bind/named.conf.options.
+
+    Especifica la dirección de escucha:
+        Busca la sección options y agrega o modifica la línea listen-on para que escuche solo en direcciones IPv4. Debe verse así:
+
+        plaintext
+
+    options {
+        listen-on port 53 { 0.0.0.0; };  # Escuchar en todas las interfaces IPv4
+        listen-on-v6 { none; };           # Desactivar IPv6
+        ...
+    };
+
+Guarda los cambios y cierra el archivo.
+
+Reinicia el servicio de BIND:
+
+    Usa el siguiente comando para reiniciar el servicio y aplicar los cambios:
+
+    bash
+
+sudo systemctl restart bind9
+
+O, si estás usando una distribución que no utiliza systemd, puedes usar:
+
+bash
+
+        sudo service bind9 restart
+
+Verifica la configuración
+
+Para asegurarte de que el servidor DNS está escuchando solo en IPv4, puedes usar el comando netstat o ss:
+
+bash
+
+sudo netstat -tuln | grep :53
+
+Esto debería mostrar que el servicio está escuchando en direcciones IPv4 (0.0.0.0:53) y no en ninguna dirección IPv6.
+Notas adicionales
+
+    Asegúrate de que tu firewall permita el tráfico en el puerto 53 (UDP y TCP) para que el DNS funcione correctamente.
+    Si utilizas otro software de DNS, la configuración puede variar, así que consulta la documentación específica de ese software.
