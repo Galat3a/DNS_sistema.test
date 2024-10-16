@@ -10,13 +10,13 @@ Vagrant.configure("2") do |config|
  config.vm.define "tierra" do |tierra|
   tierra.vm.hostname = "tierra.sistema.test"
   tierra.vm.network "private_network", ip: "192.168.57.103"
-  tierra.vm.provision "shell", name: "update", inline: <<-SHELL
+  tierra.vm.provision "shell", inline: <<-SHELL
     apt-get update
-    apt-get install -y bind9 dnsutils apache2
+    apt-get install -y bind9 dnsutils
 
   SHELL
   # provisonar sólo este bloque 'vagrant provision tierra --provision-with config'
-  tierra.vm.provision "shell", name: "config", inline: <<-SHELL
+  tierra.vm.provision "shell", inline: <<-SHELL
     cp /vagrant/named /etc/default
     cp /vagrant/named.conf.* /etc/bind
     cp /vagrant/deaw.test.dns /var/lib/bind
@@ -29,12 +29,12 @@ end #tierra
   config.vm.define "venus" do |venus|
     venus.vm.hostname = "venus.sistema.test"
     venus.vm.network "private_network", ip: "192.168.57.102"
-    venus.vm.provision "shell", name: "update", inline: <<-SHELL
+    venus.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get install -y bind9 dnsutils
     SHELL
     # provisonar sólo este bloque   'vagrant provision venus --provision-with config'
-    venus.vm.provision "shell", name: "config", inline: <<-SHELL
+    venus.vm.provision "shell", inline: <<-SHELL
       cp /vagrant/named /etc/default
       cp /vagrant/named.conf.* /etc/bind
       cp /vagrant/deaw.test.dns /var/lib/bind
