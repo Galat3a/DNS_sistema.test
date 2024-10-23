@@ -73,6 +73,13 @@ EOF
   @        IN NS   debian.tierra.sistema.test.
   debian.tierra.sistema.test. IN A         192.168.57.103
 EOF
+# Modificar el archivo /etc/bind/named.conf.local para la zona inversa
+sudo tee -a /etc/bind/named.conf.local << EOF
+zone "57.168.192.in-addr.arpa" {
+    type master;
+    file "/var/lib/bind/tierra.sistema.test.rev";
+};
+EOF
   SHELL
   # provisonar sólo este bloque 'vagrant provision tierra --provision-with config'
   tierra.vm.provision "shell", inline: <<-SHELL
