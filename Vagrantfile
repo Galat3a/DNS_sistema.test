@@ -11,9 +11,27 @@ Vagrant.configure("2") do |config|
   tierra.vm.hostname = "tierra.sistema.test"
   tierra.vm.network "private_network", ip: "192.168.57.103"
   tierra.vm.provision "shell", inline: <<-SHELL
+    # Actualizar paquetes
     apt-get update
+     # Instalar bind9 si no está instalado
     apt-get install -y bind9 dnsutils
+    # Modificar el archivo /etc/default/named
+    echo 'OPTIONS="-u bind -4"' | sudo tee /etc/default/named
+    # Reiniciar el servicio bind9
+    sudo systemctl restart bind9
+    # Modificar el archivo /etc/bind/named.conf.options
+    # Modificar el archivo /etc/bind/named.conf.options
+    sudo tee /etc/bind/named.conf.options << EOF
+      allow-transfer { none; };
+      listen-on port 53 { 192.168.57.0; };
+      recursion yes;
+      allow-recursion { 192.168.57.0/24; };  # Asegúrate de que esto sea correcto
+      dnssec-validation yes;
+EOF
+  # Reiniciar el servicio bind9
+  sudo systemctl restart bind9
 
+    
   SHELL
   # provisonar sólo este bloque 'vagrant provision tierra --provision-with config'
   tierra.vm.provision "shell", inline: <<-SHELL
