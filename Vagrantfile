@@ -51,7 +51,7 @@ EOF
       // listen-on-v6 { any; };
     };
 EOF  
-  ## Modificar el archivo /etc/bind/named.conf.local
+  # Modificar el archivo /etc/bind/named.conf.local
   sudo tee /etc/bind/named.conf.local << EOF
 zone "tierra.sistema.test" {
         type master;
@@ -76,6 +76,13 @@ end #tierra
     venus.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get install -y bind9 dnsutils
+      # Modificar el archivo /etc/bind/named.conf.local
+      sudo tee /etc/bind/named.conf.local << EOF
+          zone "venus.sistema.test" {
+            type master;
+            file "/var/lib/bind/venus.sistema.test";
+          };
+EOF
     SHELL
     # provisonar sólo este bloque   'vagrant provision venus --provision-with config'
     venus.vm.provision "shell", inline: <<-SHELL
