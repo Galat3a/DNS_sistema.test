@@ -58,6 +58,21 @@ zone "tierra.sistema.test" {
         file "/var/lib/bind/tierra.sistema.test";
 };
 EOF
+  #Creacion del archivo /var/lib/bind/tierra.sistema.test
+  sudo tee /etc/bind/tierra.sistema.test << EOF
+  ; tierra.sistema.test
+  ;
+  \$TTL    86400
+  @ IN SOA debian.tierra.sistema.test. admin.tierra.sistema.test. (
+       202410231   ; Serial
+        3600       ; Refresh
+        1800       ; Retry
+        604800     ; Expire
+        86400 )    ; Negative Cache TTL
+  ;
+  @        IN NS   debian.tierra.sistema.test.
+  debian.tierra.sistema.test. IN A         192.168.57.103
+EOF
   SHELL
   # provisonar sólo este bloque 'vagrant provision tierra --provision-with config'
   tierra.vm.provision "shell", inline: <<-SHELL
@@ -82,6 +97,21 @@ end #tierra
             type master;
             file "/var/lib/bind/venus.sistema.test";
           };
+EOF
+  #Creacion del archivo /var/lib/bind/venus.sistema.test
+  sudo tee /etc/bind/venus.sistema.test << EOF
+  ; venus.sistema.test
+  ;
+  \$TTL    86400
+  @ IN SOA debian.venus.sistema.test. admin.venus.sistema.test. (
+       202410231   ; Serial
+        3600       ; Refresh
+        1800       ; Retry
+        604800     ; Expire
+        86400 )    ; Negative Cache TTL
+  ;
+  @        IN NS   debian.venus.sistema.test.
+  debian.venus.sistema.test. IN A         192.168.57.102
 EOF
     SHELL
     # provisonar sólo este bloque   'vagrant provision venus --provision-with config'
