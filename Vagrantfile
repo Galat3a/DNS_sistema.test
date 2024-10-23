@@ -32,25 +32,31 @@ EOF
   sudo systemctl restart bind9
   # Modificar el archivo /etc/bind/named.conf.options
   sudo tee /etc/bind/named.conf.options << EOF
-    acl recursivas {
-      127.0.0.0/8;
-      192.168.57.0/24;
-      };
+  acl recursivas {
+    127.0.0.0/8;
+    192.168.57.0/24;
+  };
 
-    options {
-      directory "/var/cache/bind";
+  options {
+    directory "/var/cache/bind";
 
-      allow-transfer { none; };
-      listen-on port 53 { 192.168.57.0; };
+    allow-transfer { none; };
+    listen-on port 53 { 192.168.57.0; };
 
-      recursion yes;
-      allow-recursion { recursivas; };
+    recursion yes;
+    allow-recursion { recursivas; };
 
-      dnssec-validation yes;
+    dnssec-validation yes;
 
-      // listen-on-v6 { any; };
+    forwarders {
+        208.67.222.222;  // OpenDNS
     };
-EOF  
+
+    forward only;  // Esto asegura que solo se reenvíen consultas
+
+    // listen-on-v6 { any; };
+  };
+EOF
   # Modificar el archivo /etc/bind/named.conf.local
   sudo tee /etc/bind/named.conf.local << EOF
 zone "tierra.sistema.test" {
@@ -69,7 +75,7 @@ EOF
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
-        7200       ; Negative Cache TTL (2 horas)
+        7200       ; Negative Cache TTL
   ;
   @        IN NS   debian.tierra.sistema.test.
   debian.tierra.sistema.test. IN A         192.168.57.103
@@ -95,7 +101,7 @@ sudo tee /var/lib/bind/tierra.sistema.test.rev << EOF
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
-        7200       ; Negative Cache TTL (2 horas)
+        7200       ; Negative Cache TTL
 ;
 @        IN NS   debian.tierra.sistema.test.
 103             IN PTR      debian.tierra.sistema.test.
@@ -136,7 +142,7 @@ EOF
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
-        7200       ; Negative Cache TTL (2 horas)
+        7200       ; Negative Cache TTL
   ;
   @        IN NS   debian.venus.sistema.test.
   debian.venus.sistema.test. IN A         192.168.57.102
