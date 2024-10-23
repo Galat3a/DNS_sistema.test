@@ -151,6 +151,7 @@ EOF
   debian.venus.sistema.test. IN A         192.168.57.102
   ns1 IN CNAME tierra.sistema.test.
   ns2 IN CNAME venus.sistema.test. 
+  mail IN CNAME marte.sistema.test.
 EOF
     SHELL
     # provisonar sólo este bloque   'vagrant provision venus --provision-with config'
