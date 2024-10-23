@@ -156,7 +156,7 @@ EOF
   ns2 IN CNAME venus.sistema.test. 
 EOF
     SHELL
-    # provisonar sólo este bloque   'vagrant provision venus --provision-with config'
+    # provisonar sólo este bloque 'vagrant provision venus --provision-with config'
     venus.vm.provision "shell", inline: <<-SHELL
       cp /vagrant/named /etc/default
       cp /vagrant/named.conf.* /etc/bind

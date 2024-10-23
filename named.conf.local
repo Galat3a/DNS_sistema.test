@@ -6,13 +6,8 @@
 // organization
 //include "/etc/bind/zones.rfc1918";
 
-zone "tierra.sistema.test" {
-    type master;
-    file "/etc/bind/tierra.sistema.test";
-    allow-transfer { 192.168.57.102; };  // IP de venus
-};
-
-zone "57.168.192.in-addr.arpa" {
-    type master;
-    file "/var/lib/bind/tierra.sistema.test.rev";
-};
+zone "venus.sistema.test" {
+            type master;
+            file "/var/lib/bind/venus.sistema.test";
+            masters { 192.168.57.103cd ; };  // IP de tierra
+          };
