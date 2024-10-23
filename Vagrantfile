@@ -82,6 +82,8 @@ EOF
   ; Alias
   ns1 IN CNAME tierra.sistema.test.
   ns2 IN CNAME venus.sistema.test.
+  ;Registro MR
+  @ IN MX 10 marte.sistema.test 
 EOF
 # Modificar el archivo /etc/bind/named.conf.local para la zona inversa y para añadir a venus como esclavo
 
