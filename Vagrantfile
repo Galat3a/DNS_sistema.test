@@ -51,6 +51,13 @@ EOF
       // listen-on-v6 { any; };
     };
 EOF  
+  ## Modificar el archivo /etc/bind/named.conf.local
+  sudo tee /etc/bind/named.conf.local << EOF
+zone "tierra.sistema.test" {
+        type master;
+        file "/var/lib/bind/tierra.sistema.test";
+};
+EOF
   SHELL
   # provisonar sólo este bloque 'vagrant provision tierra --provision-with config'
   tierra.vm.provision "shell", inline: <<-SHELL
