@@ -116,9 +116,10 @@ EOF
   tierra.vm.provision "shell", inline: <<-SHELL
     cp /vagrant/named /etc/default
     cp /vagrant/named.conf.* /etc/bind
-    cp /vagrant/deaw.test.dns /var/lib/bind
-    cp /vagrant/192.168.57.dns /var/lib/bind
+    cp /vagrant/tierra.sistema.test /var/lib/bind
+    cp /vagrant/tierra.sistema.test.rev /var/lib/bind
     systemctl restart named
+    systemctl restart bind9
   SHELL
 end #tierra
 
@@ -159,11 +160,38 @@ EOF
     venus.vm.provision "shell", inline: <<-SHELL
       cp /vagrant/named /etc/default
       cp /vagrant/named.conf.* /etc/bind
-      cp /vagrant/deaw.test.dns /var/lib/bind
-      cp /vagrant/192.168.57.dns /var/lib/bind
+      cp /vagrant/venus.tierra.test /var/lib/bind
       systemctl restart named
+      systemctl restart bind9
     SHELL
   end #venus
+  
+  # Servidor Marte (Correo)
+  config.vm.define "marte" do |marte|
+    marte.vm.hostname = "marte.sistema.test"
+    marte.vm.network "private_network", ip: "192.168.57.101"
+    marte.vm.provision "shell", inline: <<-SHELL
+      # Actualizar paquetes
+      apt-get update
+      # Instalar Postfix
+      apt-get install -y postfix
+      # Configurar Postfix
+      postconf -e "myhostname = marte.sistema.test"
+      postconf -e "mydomain = sistema.test"
+      postconf -e "myorigin = /etc/mailname"
+      postconf -e "inet_interfaces = all"
+      postconf -e "inet_protocols = all"
+      # Reiniciar Postfix
+      systemctl restart postfix
+    SHELL
+    # Agregar registros DNS
+    marte.vm.provision "shell", inline: <<-SHELL
+      echo "@ IN MX 10 marte.sistema.test." >> /etc/bind/tierra.sistema.test
+      echo "mail IN CNAME marte.sistema.test." >> /etc/bind/tierra.sistema.test
+      # Reiniciar BIND para aplicar los cambios
+      systemctl restart bind9
+    SHELL
+  end #marte
 
 end
 
