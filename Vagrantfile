@@ -114,10 +114,10 @@ EOF
   SHELL
   # provisonar sólo este bloque 'vagrant provision tierra --provision-with config'
   tierra.vm.provision "shell", inline: <<-SHELL
-    cp /vagrant/named /etc/default
-    cp /vagrant/named.conf.* /etc/bind
-    cp /vagrant/tierra.sistema.test /var/lib/bind
-    cp /vagrant/tierra.sistema.test.rev /var/lib/bind
+    cp /vagrant/tierra/named /etc/default
+    cp /vagrant/tierra/named.conf.* /etc/bind
+    cp /vagrant/tierra/tierra.sistema.test /var/lib/bind
+    cp /vagrant/tierra/tierra.sistema.test.rev /var/lib/bind
     systemctl restart named
     systemctl restart bind9
   SHELL
@@ -158,9 +158,9 @@ EOF
     SHELL
     # provisonar sólo este bloque 'vagrant provision venus --provision-with config'
     venus.vm.provision "shell", inline: <<-SHELL
-      cp /vagrant/named /etc/default
-      cp /vagrant/named.conf.* /etc/bind
-      cp /vagrant/venus.tierra.test /var/lib/bind
+      cp /vagrant/venus/named /etc/default
+      cp /vagrant/venus/named.conf.* /etc/bind
+      cp /vagrant/venus/venus.tierra.test /var/lib/bind
       systemctl restart named
       systemctl restart bind9
     SHELL
