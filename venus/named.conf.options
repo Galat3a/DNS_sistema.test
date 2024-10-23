@@ -1,0 +1,24 @@
+acl recursivas {
+    127.0.0.0/8;
+    192.168.57.0/24;
+  };
+
+  options {
+    directory "/var/cache/bind";
+
+    allow-transfer { none; };
+    listen-on port 53 { 127.0.0.1; 192.168.57.102; };
+    
+    recursion yes;
+    allow-recursion { recursivas; };
+
+    dnssec-validation yes;
+
+    forwarders {
+        208.67.222.222;  // OpenDNS
+    };
+
+    forward only;  // Esto asegura que solo se reenvíen consultas
+
+    // listen-on-v6 { any; };
+  };
