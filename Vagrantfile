@@ -42,7 +42,7 @@ EOF
 
     allow-transfer { none; };
     listen-on port 53 { 127.0.0.1; 192.168.57.103; };
-
+    
     recursion yes;
     allow-recursion { recursivas; };
 
