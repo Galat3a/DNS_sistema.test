@@ -74,12 +74,15 @@ EOF
   @        IN NS   debian.tierra.sistema.test.
   debian.tierra.sistema.test. IN A         192.168.57.103
 EOF
-# Modificar el archivo /etc/bind/named.conf.local para la zona inversa
+# Modificar el archivo /etc/bind/named.conf.local para la zona inversa y para añadir a venus como esclavo
+
 sudo tee -a /etc/bind/named.conf.local << EOF
-zone "57.168.192.in-addr.arpa" {
+zone "tierra.sistema.test" {
     type master;
-    file "/var/lib/bind/tierra.sistema.test.rev";
+    file "/etc/bind/tierra.sistema.test";
+    allow-transfer { 192.168.57.102; };  // IP de venus
 };
+EOF
 EOF
 # Crear el archivo /var/lib/bind/tierra.sistema.test.rev
 sudo tee /var/lib/bind/tierra.sistema.test.rev << EOF
