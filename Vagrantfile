@@ -69,7 +69,7 @@ EOF
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
-        86400 )    ; Negative Cache TTL
+        7200       ; Negative Cache TTL (2 horas)
   ;
   @        IN NS   debian.tierra.sistema.test.
   debian.tierra.sistema.test. IN A         192.168.57.103
@@ -95,7 +95,7 @@ sudo tee /var/lib/bind/tierra.sistema.test.rev << EOF
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
-        86400 )    ; Negative Cache TTL
+        7200       ; Negative Cache TTL (2 horas)
 ;
 @        IN NS   debian.tierra.sistema.test.
 103             IN PTR      debian.tierra.sistema.test.
@@ -123,7 +123,7 @@ end #tierra
           zone "venus.sistema.test" {
             type master;
             file "/var/lib/bind/venus.sistema.test";
-            masters { 192.168.57.103; };  // IP de tierra
+            masters { 192.168.57.103cd ; };  // IP de tierra
           };
 EOF
   #Creacion del archivo /var/lib/bind/venus.sistema.test
@@ -136,7 +136,7 @@ EOF
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
-        86400 )    ; Negative Cache TTL
+        7200       ; Negative Cache TTL (2 horas)
   ;
   @        IN NS   debian.venus.sistema.test.
   debian.venus.sistema.test. IN A         192.168.57.102
