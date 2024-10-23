@@ -60,6 +60,7 @@ zone "tierra.sistema.test" {
 EOF
   #Creacion del archivo /var/lib/bind/tierra.sistema.test
   sudo tee /etc/bind/tierra.sistema.test << EOF
+  ;
   ; tierra.sistema.test
   ;
   \$TTL    86400
@@ -79,6 +80,22 @@ zone "57.168.192.in-addr.arpa" {
     type master;
     file "/var/lib/bind/tierra.sistema.test.rev";
 };
+EOF
+# Crear el archivo /var/lib/bind/tierra.sistema.test.rev
+sudo tee /var/lib/bind/tierra.sistema.test.rev << EOF
+;
+; 57.168.192
+;
+\$TTL    86400
+@  IN SOA debian.tierra.sistema.test. admin.tierra.sistema.test. (
+       202410231   ; Serial
+        3600       ; Refresh
+        1800       ; Retry
+        604800     ; Expire
+        86400 )    ; Negative Cache TTL
+;
+@        IN NS   debian.tierra.sistema.test.
+103             IN PTR      debian.tierra.sistema.test.
 EOF
   SHELL
   # provisonar sólo este bloque 'vagrant provision tierra --provision-with config'
