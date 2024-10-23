@@ -30,8 +30,27 @@ Vagrant.configure("2") do |config|
 EOF
   # Reiniciar el servicio bind9
   sudo systemctl restart bind9
+  # Modificar el archivo /etc/bind/named.conf.options
+  sudo tee /etc/bind/named.conf.options << EOF
+    acl recursivas {
+      127.0.0.0/8;
+      192.168.57.0/24;
+      };
 
-    
+    options {
+      directory "/var/cache/bind";
+
+      allow-transfer { none; };
+      listen-on port 53 { 192.168.57.0; };
+
+      recursion yes;
+      allow-recursion { recursivas; };
+
+      dnssec-validation yes;
+
+      // listen-on-v6 { any; };
+    };
+EOF  
   SHELL
   # provisonar sólo este bloque 'vagrant provision tierra --provision-with config'
   tierra.vm.provision "shell", inline: <<-SHELL
