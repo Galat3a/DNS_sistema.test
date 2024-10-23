@@ -123,6 +123,7 @@ end #tierra
           zone "venus.sistema.test" {
             type master;
             file "/var/lib/bind/venus.sistema.test";
+            masters { 192.168.57.103; };  // IP de tierra
           };
 EOF
   #Creacion del archivo /var/lib/bind/venus.sistema.test
