@@ -79,6 +79,9 @@ EOF
   ;
   @        IN NS   debian.tierra.sistema.test.
   debian.tierra.sistema.test. IN A         192.168.57.103
+  ; Alias
+  ns1 IN CNAME tierra.sistema.test.
+  ns2 IN CNAME venus.sistema.test.
 EOF
 # Modificar el archivo /etc/bind/named.conf.local para la zona inversa y para añadir a venus como esclavo
 
