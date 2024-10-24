@@ -33,7 +33,7 @@ OPTIONS="-u bind -4"
 
 ```
 
-2. He modicicado dos archivos de la ruto /etc/bind, los cuales son: 
+2. He modicicado dos archivos, los cuales son: 
 
 /ect/bind/named.conf.local
 
@@ -102,7 +102,7 @@ $TTL    86400
 ```
 En venus:
 
-1. He nmodificado dos archivos en la ruta /etc/bind, los cuales han sido
+1. He modificado dos archivos en la ruta /etc/bind, los cuales han sido
 
 /etc/bind/named.conf.options
 
@@ -132,14 +132,28 @@ acl recursivas {
     // listen-on-v6 { any; };
   };
 
+  ```
+  /etc/bind/named.conf.local
+
+ ```bash
+
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
 
 zone "venus.sistema.test" {
             type master;
             file "/var/lib/bind/venus.sistema.test";
             masters { 192.168.57.103cd ; };  // IP de tierra
           };
+
 ```
 2. He creado en /var/lib/bind/venus.sistema.test
+
 ```bash
   ;
   ; venus.sistema.test
@@ -156,4 +170,38 @@ zone "venus.sistema.test" {
   debian.venus.sistema.test. IN A         192.168.57.102
   ns1 IN CNAME tierra.sistema.test.
   ns2 IN CNAME venus.sistema.test. 
+
+```
+Todos los archivos mencionados anteriormente los he copiado en Vagrant, cada uno en una carpeta propia para que no se pisen aquellos que se llaman igual, estos se sustituiran por los originales en la creacion de las maquinas cuando ejecutemos estas con vagrant up a traves de las provisiones indicadas en vagrantfile, sobre crear esta copias en vagrantfile me di cuenta tarde, por lo que en mi provisionamiento también tengo incluido las modificaciones de cada archivo por separado en desglosado en comandos bash. 
+
+Para marte, aunque solo habia que hacer algunas modificaciones en tierra.sistema.test y venus.sistema.tes, yo he creado una provision para crear otra maquina llamada marte la cual actua como servidor de correo. 
+
+```bash
+  
+  # Servidor Marte (Correo)
+  config.vm.define "marte" do |marte|
+    marte.vm.hostname = "marte.sistema.test"
+    marte.vm.network "private_network", ip: "192.168.57.104"
+    marte.vm.provision "shell", inline: <<-SHELL
+      # Actualizar paquetes
+      apt-get update
+      # Instalar Postfix
+      apt-get install -y postfix
+      # Configurar Postfix
+      postconf -e "myhostname = marte.sistema.test"
+      postconf -e "mydomain = sistema.test"
+      postconf -e "myorigin = /etc/mailname"
+      postconf -e "inet_interfaces = all"
+      postconf -e "inet_protocols = all"
+      # Reiniciar Postfix
+      systemctl restart postfix
+    SHELL
+    # Agregar registros DNS
+    marte.vm.provision "shell", inline: <<-SHELL
+      echo "@ IN MX 10 marte.sistema.test." >> /etc/bind/tierra.sistema.test
+      echo "mail IN CNAME marte.sistema.test." >> /etc/bind/tierra.sistema.test
+      # Reiniciar BIND para aplicar los cambios
+      systemctl restart bind9
+    SHELL
+  end #marte
 ```
