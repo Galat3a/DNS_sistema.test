@@ -131,6 +131,14 @@ end #tierra
     venus.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get install -y bind9 dnsutils
+      # Modificar el archivo /etc/bind/named.conf.local
+      sudo tee /etc/bind/named.conf.local << EOF
+          zone "venus.sistema.test" {
+            type master;
+            file "/var/lib/bind/venus.sistema.test";
+            masters { 192.168.57.103cd ; };  // IP de tierra
+          };
+EOF
       #Creacion del archivo /var/lib/bind/venus.sistema.test
       sudo tee /etc/bind/venus.sistema.test << EOF
       ; venus.sistema.test
