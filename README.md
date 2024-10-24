@@ -15,7 +15,7 @@ git config --global commit.template "C:\Users\DAW-A.DESKTOP-ECOE3HP\.gittemplate
 ```
 # Resumen tarea
 
-Para realizar esta actividad he tenido que modificar varios archivos. He comenzado creando en vagrantfile un scrip con provisiones para que lo requerido en este ejercicio se cree de manera automatica, para ello he añadido los cambios que deben de darse en archivos concretos.
+Para realizar esta actividad he tenido que modificar varios archivos. He comenzado creando en vagrantfile un script con provisiones para que lo requerido en este ejercicio se cree de manera automatica, para ello he añadido los cambios que deben de darse en archivos concretos.
 
 Una vez creada la maquina tierra con la instalación de bind9:
 
