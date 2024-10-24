@@ -16,6 +16,7 @@ debian.tierra.sistema.test. IN A	 192.168.57.103
 ns1 IN CNAME tierra.sistema.test.
 ns2 IN CNAME venus.sistema.test.
 mail IN CNAME marte.sistema.test.
+ns3 IN CNAME 192.168.57.101
 
 ;Registro MR
 @ IN MX 10 marte.sistema.test

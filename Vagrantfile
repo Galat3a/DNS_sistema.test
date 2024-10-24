@@ -69,22 +69,25 @@ EOF
     ;
     ; tierra.sistema.test
     ;
-    \$TTL    86400
+    $TTL	86400
     @ IN SOA debian.tierra.sistema.test. admin.tierra.sistema.test. (
-        202410231   ; Serial
+       202410231   ; Serial
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
-        7200       ; Negative Cache TTL
+        7200 )     ; Negative Cache TTL (2 horas)
     ;
-    @        IN NS   debian.tierra.sistema.test.
-    debian.tierra.sistema.test. IN A         192.168.57.103
+    @	 IN NS	 debian.tierra.sistema.test.
+    debian.tierra.sistema.test. IN A	 192.168.57.103
+
     ; Alias
     ns1 IN CNAME tierra.sistema.test.
     ns2 IN CNAME venus.sistema.test.
+    mail IN CNAME marte.sistema.test.
     ns3 IN CNAME 192.168.57.101
+
     ;Registro MR
-    @ IN MX 10 marte.sistema.test 
+    @ IN MX 10 marte.sistema.test
 EOF
     # Modificar el archivo /etc/bind/named.conf.local para la zona inversa y para añadir a venus como esclavo
 
@@ -133,11 +136,11 @@ end #tierra
       apt-get install -y bind9 dnsutils
       # Modificar el archivo /etc/bind/named.conf.local
       sudo tee /etc/bind/named.conf.local << EOF
-          zone "venus.sistema.test" {
-            type master;
-            file "/var/lib/bind/venus.sistema.test";
-            masters { 192.168.57.103cd ; };  // IP de tierra
-          };
+         zone "venus.sistema.test" {
+          type master;
+          file "/var/lib/bind/venus.sistema.test";
+          masters { 192.168.57.103; };  // IP de tierra
+};
 EOF
       #Creacion del archivo /var/lib/bind/venus.sistema.test
       sudo tee /etc/bind/venus.sistema.test << EOF

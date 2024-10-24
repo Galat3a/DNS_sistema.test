@@ -7,7 +7,7 @@
 //include "/etc/bind/zones.rfc1918";
 
 zone "venus.sistema.test" {
-            type master;
-            file "/var/lib/bind/venus.sistema.test";
-            masters { 192.168.57.103cd ; };  // IP de tierra
-          };
+    type master;
+    file "/var/lib/bind/venus.sistema.test";
+    masters { 192.168.57.103; };  // IP de tierra
+};
