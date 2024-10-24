@@ -12,6 +12,8 @@ Añade una plantilla para tus commits utilizando el siguiente comando:
 
 ```bash
 git config --global commit.template "C:\Users\DAW-A.DESKTOP-ECOE3HP\.gittemplate"
+```
+# Resumen tarea
 
 Para realizar esta actividad he tenido que modificar varios archivos. He comenzado creando en vagrantfile un scrip con provisiones para que lo requerido en este ejercicio se cree de manera automatica, para ello he añadido los cambios que deben de darse en archivos concretos.
 
