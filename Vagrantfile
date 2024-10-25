@@ -26,8 +26,8 @@ Vagrant.configure("2") do |config|
     cp /vagrant/tierra/named.conf.* /etc/bind
     cp /vagrant/tierra/tierra.sistema.test /var/lib/bind
     cp /vagrant/tierra/tierra.sistema.test.rev /var/lib/bind
-    systemctl restart named
-    systemctl restart bind9
+    sudo systemctl restart named
+    sudo systemctl restart bind9
   SHELL
 end #tierra
   # Servidor ESCLAVO Venus DNS
@@ -45,8 +45,9 @@ end #tierra
         cp /vagrant/venus/named /etc/default
         cp /vagrant/venus/named.conf.* /etc/bind
         cp /vagrant/venus/venus.tierra.test /var/lib/bind
-        systemctl restart named
-        systemctl restart bind9
+        sudo systemctl restart named
+        sudo systemctl restart bind9
+        
     SHELL
   end #venus
   
