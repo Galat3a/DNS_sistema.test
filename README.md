@@ -262,4 +262,6 @@ Para Marte, aunque solo había que hacer algunas modificaciones en tierra.sistem
   end #marte
 
 ```
-Como se puede observar en la documentación, hay un .txt llamado VagrantfileV0; en este archivo se encuentra el primer Vagrantfile que creé, en el cual añadía los cambios que hacía en cada documento en bash, en vez de copiar directamente el archivo ya modificado. Como temo que algún comando pueda tener error, he preferido quitarlo y usar las provisiones justas de la creación de la máquina, más la parte donde le decimos que añada los archivos que se encuentran en /vagrant. Como esa parte me llevó bastante tiempo, no he querido eliminarla del todo, sino dejarla ahí como información.
+## Notas
+
+Como se puede observar en la documentación, hay un .txt llamado VagrantfileV0, en este archivo se encuentra el primer Vagrantfile que creé, en el cual añadí los cambios que hacía en cada srchivo en bash, en vez de copiar directamente el archivo ya modificado. Como temo que algún comando pueda tener error, he preferido quitarlo y usar las provisiones justas de la creación de la máquina más la parte donde le decimos que añada dichos archivos de /vagrant/tierra o /vagrant/venus. Como esa parte me llevó bastante tiempo redactarla, no he querido eliminar del todo el, sino dejarla ahí como información extra.
