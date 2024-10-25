@@ -15,13 +15,16 @@ git config --global commit.template "C:\Users\DAW-A.DESKTOP-ECOE3HP\.gittemplate
 ```
 # Resumen tarea
 
-Para realizar esta actividad he tenido que modificar varios archivos. He comenzado creando en vagrantfile un script con provisiones para que lo requerido en este ejercicio se cree de manera automatica, para ello he añadido los cambios que deben de darse en archivos concretos.
+Para realizar esta actividad he tenido que modificar varios archivos. He comenzado creando en el Vagrantfile un script con provisiones para que lo requerido en este ejercicio se cree de manera automática; para ello he añadido los cambios que deben darse en archivos concretos.
 
-Una vez creada la maquina tierra con la instalación de bind9:
+Una vez creada la máquina Tierra con la instalación de bind9:
+
+/*--------------------------------------------TIERRA---------------------------------------*/
 
 1. He modificado el archivo named de la siguiente ruta:
 
 ```bash
+
 /etc/default/named
 
 #
@@ -38,13 +41,6 @@ OPTIONS="-u bind -4"
 /ect/bind/named.conf.local
 
 ```bash
-//
-// Do any local configuration here
-//
-
-// Consider adding the 1918 zones here, if they are not used in your
-// organization
-//include "/etc/bind/zones.rfc1918";
 
 zone "tierra.sistema.test" {
     type master;
@@ -56,6 +52,7 @@ zone "57.168.192.in-addr.arpa" {
     type master;
     file "/var/lib/bind/tierra.sistema.test.rev";
 };
+
 ```
 
  y
@@ -63,50 +60,115 @@ zone "57.168.192.in-addr.arpa" {
 /etc/bind/named.conf.options
 
 ```bash
-;
-; tierra.sistema.test
-;
+
+// Definiciond e la ACL
+acl recursivas {
+	127.0.0.0/8;
+	192.168.57.0/24;
+};
+
+
+options {
+directory "/var/cache/bind";
+
+	// If there is a firewall between you and nameservers you want
+	// to talk to, you may need to fix the firewall to allow multiple
+	// ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+	// If your ISP provided one or more IP addresses for stable 
+	// nameservers, you probably want to use them as forwarders.  
+	// Uncomment the following block, and insert the addresses replacing 
+	// the all-0's placeholder.
+
+	forwarders {
+	    208.67.222.222;
+	};
+	
+	forward only;
+	
+	allow-transfer {none; };	
+	listen-on port 53 { 127.0.0.1; 192.168.57.103; };
+	
+	recursion yes;
+	allow-recursion {recursivas; };
+	
+	//========================================================================
+	// If BIND logs error messages about the root key being expired,
+	// you will need to update your keys.  See https://www.isc.org/bind-keys
+	//========================================================================
+	dnssec-validation yes;
+
+	//listen-on-v6 { any; };
+};
+
+```
+3. he creado dos archivos en la ruta /etc/lib/bind, los cuales han sido:
+
+```bash
+
+/etc/lib/bind/tierra.sistema.tets
+
 $TTL	86400
 @ IN SOA debian.tierra.sistema.test. admin.tierra.sistema.test. (
        202410231   ; Serial
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
-        7200 )     ; Negative Cache TTL (2 horas)
-;
+        7200     ; Negative Cache TTL
+)
+
 @	 IN NS	 debian.tierra.sistema.test.
 debian.tierra.sistema.test. IN A	 192.168.57.103
+venus.sistema.test. IN A       192.168.57.102
+marte.sistema.test IN A       192.168.57.104
+mercurio.sistema.test IN A       192.168.57.101
 
 ; Alias
 ns1 IN CNAME tierra.sistema.test.
 ns2 IN CNAME venus.sistema.test.
 mail IN CNAME marte.sistema.test.
+ns3 IN CNAME mercurio.sistema.test.
 
 ;Registro MR
 @ IN MX 10 marte.sistema.test
 
-y var/lib/bind/tierra.sistema.rev
-; 
-; 57.168.192
-;
+```
+y 
+
+```bash
+
+etc/lib/bind/tierra.sistema.test.rev
+
+
 $TTL    86400
 @  IN SOA debian.tierra.sistema.test. admin.tierra.sistema.test. (
        202410231   ; Serial
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
-        7200 )     ; Negative Cache TTL (2 horas)
-;
+        7200      ; Negative Cache TTL
+)
 @        IN NS   debian.tierra.sistema.test.
-103		IN PTR      debian.tierra.sistema.test
+; Registros PTR
+103	  IN PTR      debian.tierra.sistema.test.
+102      IN PTR      venus.sistema.test.
+104      IN PTR      marte.tierra.sistema.test.
+101      IN PTR      mercurio.sistema.test.
+
 ```
+
+/*--------------------------------------------VENUS----------------------------------------*/
+
+
 En venus:
 
 1. He modificado dos archivos en la ruta /etc/bind, los cuales han sido
 
-/etc/bind/named.conf.options
 
 ```bash
+
+/etc/bind/named.conf.options
+
 acl recursivas {
     127.0.0.0/8;
     192.168.57.0/24;
@@ -133,17 +195,12 @@ acl recursivas {
   };
 
   ```
-  /etc/bind/named.conf.local
+  
 
  ```bash
 
-//
-// Do any local configuration here
-//
+ /etc/bind/named.conf.local
 
-// Consider adding the 1918 zones here, if they are not used in your
-// organization
-//include "/etc/bind/zones.rfc1918";
 
 zone "venus.sistema.test" {
             type master;
@@ -155,26 +212,25 @@ zone "venus.sistema.test" {
 2. He creado en /var/lib/bind/venus.sistema.test
 
 ```bash
-  ;
-  ; venus.sistema.test
-  ;
-  \$TTL    86400
+   $TTL    86400
   @ IN SOA debian.venus.sistema.test. admin.venus.sistema.test. (
        202410231   ; Serial
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
         7200       ; Negative Cache TTL
-  ;
+  )
   @        IN NS   debian.venus.sistema.test.
   debian.venus.sistema.test. IN A         192.168.57.102
   ns1 IN CNAME tierra.sistema.test.
   ns2 IN CNAME venus.sistema.test. 
 
 ```
-Todos los archivos mencionados anteriormente los he copiado en Vagrant, cada uno en una carpeta propia para que no se pisen aquellos que se llaman igual, estos se sustituiran por los originales en la creacion de las maquinas cuando ejecutemos estas con vagrant up a traves de las provisiones indicadas en vagrantfile, sobre crear esta copias en vagrantfile me di cuenta tarde, por lo que en mi provisionamiento también tengo incluido las modificaciones de cada archivo por separado en desglosado en comandos bash. 
+Todos los archivos modificados anteriormente han sido copiados en /vagrant, en carpetas separadas para que no hubiera solapamiento entre los archivos de Venus y de Tierra. De este modo, en las provisiones que indico en el Vagrantfile, cuando creemos las máquinas desde cero, estas cogerán los archivos que se han copiado anteriormente en /vagrant y los sustituirán/añadirán en las nuevas máquinas, teniendo así los ajustes que necesitamos.
 
-Para marte, aunque solo habia que hacer algunas modificaciones en tierra.sistema.test y venus.sistema.tes, yo he creado una provision para crear otra maquina llamada marte la cual actua como servidor de correo. 
+/*--------------------------------------------MARTE----------------------------------------*/
+
+Para Marte, aunque solo había que hacer algunas modificaciones en tierra.sistema.test y venus.sistema.test, yo he creado una provisión para crear otra máquina llamada Marte, la cual actúa como servidor de correo.
 
 ```bash
   
@@ -204,4 +260,6 @@ Para marte, aunque solo habia que hacer algunas modificaciones en tierra.sistema
       systemctl restart bind9
     SHELL
   end #marte
+
 ```
+Como se puede observar en la documentación, hay un .txt llamado VagrantfileV0; en este archivo se encuentra el primer Vagrantfile que creé, en el cual añadía los cambios que hacía en cada documento en bash, en vez de copiar directamente el archivo ya modificado. Como temo que algún comando pueda tener error, he preferido quitarlo y usar las provisiones justas de la creación de la máquina, más la parte donde le decimos que añada los archivos que se encuentran en /vagrant. Como esa parte me llevó bastante tiempo, no he querido eliminarla del todo, sino dejarla ahí como información.
