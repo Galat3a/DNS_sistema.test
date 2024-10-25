@@ -1,16 +1,17 @@
-;
-; tierra.sistema.test
-;
 $TTL	86400
 @ IN SOA debian.tierra.sistema.test. admin.tierra.sistema.test. (
        202410231   ; Serial
         3600       ; Refresh
         1800       ; Retry
         604800     ; Expire
-        7200 )     ; Negative Cache TTL (2 horas)
-;
+        7200     ; Negative Cache TTL
+)
+
 @	 IN NS	 debian.tierra.sistema.test.
 debian.tierra.sistema.test. IN A	 192.168.57.103
+venus.sistema.test. IN A       192.168.57.102
+marte.sistema.test IN A       192.168.57.104
+mercurio.sistema.test IN A       192.168.57.101
 
 ; Alias
 ns1 IN CNAME tierra.sistema.test.
