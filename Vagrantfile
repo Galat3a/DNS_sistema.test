@@ -12,13 +12,14 @@ Vagrant.configure("2") do |config|
   tierra.vm.network "private_network", ip: "192.168.57.103"
   tierra.vm.provision "shell", inline: <<-SHELL
     # Actualizar paquetes
-    apt-get update
+    sudo apt-get update
+    sudo apt-get upgrade
      # Instalar bind9 si no está instalado
-    apt-get install -y bind9 dnsutils
+    sudo apt-get install -y bind9 dnsutils
     # Modificar el archivo /etc/default/named
-    echo 'OPTIONS="-u bind -4"' | sudo tee /etc/default/named
+    sudo echo 'OPTIONS="-u bind -4"' | sudo tee /etc/default/named
     # Reiniciar el servicio bind9
-    sudo systemctl restart bind9
+    sudo sudo systemctl restart bind9
   SHELL
   # provisonar sólo este bloque 'vagrant provision tierra --provision-with config'
   tierra.vm.provision "shell", inline: <<-SHELL
@@ -35,8 +36,9 @@ end #tierra
     venus.vm.hostname = "venus.sistema.test"
     venus.vm.network "private_network", ip: "192.168.57.102"
     venus.vm.provision "shell", inline: <<-SHELL
-      apt-get update
-      apt-get install -y bind9 dnsutils
+      sudo apt-get update
+      sudo apt-get upgrade
+      sudo apt-get install -y bind9 dnsutils
        # Reiniciar el servicio bind9
     sudo systemctl restart bind9
     SHELL
@@ -57,9 +59,10 @@ end #tierra
     marte.vm.network "private_network", ip: "192.168.57.104"
     marte.vm.provision "shell", inline: <<-SHELL
       # Actualizar paquetes
-      apt-get update
+      sudo apt-get update
+      sudo apt-get upgrade
       # Instalar Postfix
-      apt-get install -y postfix
+      sudo apt-get install -y postfix
       # Configurar Postfix
       postconf -e "myhostname = marte.sistema.test"
       postconf -e "mydomain = sistema.test"
